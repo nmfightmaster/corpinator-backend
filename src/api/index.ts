@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import health from './routes/health';
+import health from './routes/health.js';
 
 export default () => {
     const app = Router();

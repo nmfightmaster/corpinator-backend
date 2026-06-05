@@ -1,9 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import routes from '../api';
-import config from '../config';
+import routes from '../api/index.js';
+import config from '../config/index.js';
 
-import { HttpException } from '../exceptions/HttpException';
+
+import { httpException } from '../exceptions/httpException.js';
 
 export default ({ app }: { app: express.Application }) => {
     app.use(cors());
@@ -15,11 +16,11 @@ export default ({ app }: { app: express.Application }) => {
     app.use(config.api.prefix, routes());
 
     app.use((req, res, next) => {
-        const err = new HttpException(404, 'Not Found');
+        const err = new httpException(404, 'Not Found');
         next(err);
     });
 
-    app.use((err: HttpException, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    app.use((err: httpException, req: express.Request, res: express.Response, next: express.NextFunction) => {
         res.status(err.status || 500);
         res.json({
             errors: {
