@@ -10,7 +10,7 @@ export default async ({ expressApp }: { expressApp: express.Application }) => {
 
   // Load me last!
   logger.info("Loading Express.");
-  await expressLoader({ app: expressApp });
+  expressLoader({ app: expressApp });
   logger.info("Express loaded.");
 };
 
