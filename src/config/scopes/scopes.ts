@@ -1,4 +1,4 @@
-import scopes from './eve-scopes.json' with { type: "json" };
+import scopes from './scopes.json' with { type: "json" };
 import logger from '../../loaders/logger.js';
 
  export function getScopes() {
