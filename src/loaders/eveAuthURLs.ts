@@ -20,7 +20,6 @@ export async function loadEveAuthURLs() {
     tokenEndpoint = data.token_endpoint;
     jwksUri = data.jwks_uri;
     revokeEndpoint = data.revocation_endpoint;
-    logger.info("Successfully loaded EVE Online auth URLs");
   } catch (error) {
     logger.error(`Error loading EVE Online auth URLs: ${error}`);
     throw error; // Rethrow the error to be handled by the caller
