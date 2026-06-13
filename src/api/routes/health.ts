@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 //import middleware from '../middleware';
 const router = Router();
 import pkg from "../../../package.json" with { type: "json" };
@@ -10,7 +10,7 @@ export default (app: Router) => {
 
   router.get(
     "/",
-    /*middleware.isAuth,*/ (req: Request, res: Response) => {
+    /*middleware.isAuth,*/ (req, res) => {
       return res.json({ status: "ok", version: version }).status(200);
     },
   );
