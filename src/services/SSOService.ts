@@ -90,7 +90,7 @@ function createSession(characterId: number): Promise<SessionModel> {
   return prismaClient.session.create({
     data: {
       characterId,
-      expiresAt: new Date(Date.now() + config.session.ttlMs),
+      expiresAt: new Date(Date.now() + config.session.eveSessionTtlMs),
     },
   });
 }
