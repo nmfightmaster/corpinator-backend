@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.2.0...v1.3.0) (2026-06-13)
+
+
+### Features
+
+* create and wire auth controller ([0a1b5ef](https://github.com/nmfightmaster/corpinator-backend-v2/commit/0a1b5ef72d4cdefc20cf3d293567b107c5bdf339))
+
 # [1.2.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.1.0...v1.2.0) (2026-06-13)
 
 
