@@ -17,6 +17,9 @@ interface Config {
     clientSecret: string;
     redirectUri: string;
   };
+  session: {
+    ttlMs: number;
+  }
 }
 
 const config: Config = {
@@ -34,6 +37,9 @@ const config: Config = {
     clientSecret: process.env.EVE_CLIENT_SECRET || "",
     redirectUri: process.env.EVE_REDIRECT_URI || "",
   },
+  session: {
+    ttlMs: Number(process.env.TTLMS) || 86400000
+  }
 };
 
 export default config;
