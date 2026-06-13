@@ -10,4 +10,25 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Character {
+  id           Int       @id
+  name         String
+  refreshToken String    @map("refresh_token")
+  sessions     Session[]
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@map("characters")
+}
+
+model Session {
+  id          String    @id @default(uuid())
+  characterId Int       @map("character_id")
+  character   Character @relation(fields: [characterId], references: [id])
+  expiresAt   DateTime  @map("expires_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  @@map("sessions")
 }
