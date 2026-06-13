@@ -1,7 +1,9 @@
 import { Router, Request, Response } from 'express';
 //import middleware from '../middleware';
 const router = Router();
-const version = require ('../../../package.json').version;
+import pkg from '../../../package.json' with { type: 'json' };
+
+const { version } = pkg;
 
 export default (app: Router) => {
     app.use('/health', router);
