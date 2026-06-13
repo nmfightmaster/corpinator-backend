@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import health from './routes/health.js';
+import { Router } from "express";
+import health from "./routes/health.js";
 
 export default () => {
-    const app = Router();
-    
-    health(app);
+  const app = Router();
 
-    return app;
-}
+  health(app);
+
+  return app;
+};

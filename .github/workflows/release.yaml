@@ -21,7 +21,6 @@ jobs:
       id-token: write # to enable use of OIDC for trusted publishing and npm provenance
 
     steps:
-
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:

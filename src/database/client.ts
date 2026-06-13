@@ -3,14 +3,14 @@ import config from "../config/index.js";
 
 let prismaClientOptions: Prisma.PrismaClientOptions = {};
 
-if (config.nodeEnv === 'development' || config.nodeEnv === 'local') {
-    prismaClientOptions = {
-        log: [ 'query', 'info', 'warn', 'error' ]
-    }  
+if (config.nodeEnv === "development" || config.nodeEnv === "local") {
+  prismaClientOptions = {
+    log: ["query", "info", "warn", "error"],
+  };
 } else {
-    prismaClientOptions = {
-        log: [ 'warn','error' ]
-    }
+  prismaClientOptions = {
+    log: ["warn", "error"],
+  };
 }
 
 const prismaClient = new PrismaClient(prismaClientOptions);
