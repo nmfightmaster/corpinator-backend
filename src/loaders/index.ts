@@ -7,7 +7,7 @@ export default async ({ expressApp }: { expressApp: express.Application }) => {
   logger.info("Loading EVE Online auth URLs.");
   await loadEveAuthURLs();
   logger.info("EVE Online auth URLs loaded.");
-  
+
   // Load me last!
   logger.info("Loading Express.");
   await expressLoader({ app: expressApp });
