@@ -1,14 +1,17 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser"
 import routes from "../api/index.js";
 import config from "../config/index.js";
 
 import { HttpException } from "../exceptions/HttpException.js";
 
 export default ({ app }: { app: express.Application }) => {
-  app.use(cors());
+  app.use(cors({ origin: config.cors.origin }));
 
   app.use(express.json());
+
+  app.use(cookieParser(config.session.secret))
 
   app.enable("trust proxy");
 
