@@ -1,4 +1,4 @@
-export class ssoException extends Error {
+export class SsoException extends Error {
     public status: number;
     public message: string;
 

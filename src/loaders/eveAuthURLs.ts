@@ -1,5 +1,5 @@
 import logger from "./logger.js";
-import { ssoException } from "../exceptions/SsoException.js";
+import { SsoException } from "../exceptions/SsoException.js";
 
 export let authorizationEndpoint = "";
 export let tokenEndpoint = "";
@@ -12,7 +12,7 @@ export async function loadEveAuthURLs() {
       "https://login.eveonline.com/.well-known/oauth-authorization-server",
     );
     if (!response.ok) {
-      throw new ssoException(
+      throw new SsoException(
         response.status,
         `Failed to fetch EVE Online auth URLs: ${response.status} ${response.statusText}`,
       );
