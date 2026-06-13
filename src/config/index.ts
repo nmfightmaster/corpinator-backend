@@ -24,6 +24,7 @@ interface Config {
   cors: {
     origin: string;
   };
+  frontendUrl: string
 }
 
 const sessionSecret = process.env.SESSION_SECRET;
@@ -68,6 +69,7 @@ const config: Config = {
   cors: {
     origin: origin!,
   },
+  frontendUrl: process.env.FRONTEND_URL || ""
 };
 
 export default config;
