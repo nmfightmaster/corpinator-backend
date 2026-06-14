@@ -1,3 +1,16 @@
+# [1.9.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.8.0...v1.9.0) (2026-06-14)
+
+
+### Bug Fixes
+
+* add compatibilityDate to config ([398f5c2](https://github.com/nmfightmaster/corpinator-backend-v2/commit/398f5c2729638eeca0c8ec46c700cc15b0a4a330))
+* add eve base url to config ([740d70f](https://github.com/nmfightmaster/corpinator-backend-v2/commit/740d70fcdd2e92139c4f59d6531ae9ea66489e6d))
+
+
+### Features
+
+* create ESI router and /me endpoint ([20825fc](https://github.com/nmfightmaster/corpinator-backend-v2/commit/20825fcce8c14e063cc64bc8f25a6b87e9e96ded))
+
 # [1.8.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.7.0...v1.8.0) (2026-06-14)
 
 ### Features
