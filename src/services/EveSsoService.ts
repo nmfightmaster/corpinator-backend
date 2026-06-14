@@ -27,9 +27,7 @@ function buildAuthUrl(state: string): string {
   return `${authorizationEndpoint}?${params.toString()}`;
 }
 
-async function exchangeCodeForTokens(
-  code: string,
-): Promise<EveTokenResponse> {
+async function exchangeCodeForTokens(code: string): Promise<EveTokenResponse> {
   const params = new URLSearchParams({
     grant_type: "authorization_code",
     code,
@@ -150,7 +148,7 @@ function deleteExpiredSessions() {
 
 async function getValidAccessToken(characterId: number) {
   const character = await getCharacter(characterId);
-  
+
   if (!character) {
     throw new Error("Character not found.");
   }
@@ -159,21 +157,20 @@ async function getValidAccessToken(characterId: number) {
   const decryptedAccessToken = decrypt(accessToken);
   const exp = decodeCharacterFromToken(decryptedAccessToken).exp;
 
-  if (exp * 1000 < (Date.now() + 60000)) {
+  if (exp * 1000 < Date.now() + 60000) {
     const decryptedRefreshToken = decrypt(character.refreshToken);
     const newTokens = await refreshTokens(decryptedRefreshToken);
     await upsertCharacter(
       characterId,
       character.name,
       newTokens.access_token,
-      newTokens.refresh_token,      
+      newTokens.refresh_token,
     );
-    return (newTokens.access_token);
+    return newTokens.access_token;
   }
 
   return decryptedAccessToken;
 }
-
 
 function getCharacter(characterId: number) {
   return prismaClient.character.findUnique({
