@@ -5,3 +5,4 @@ internal_docs/
 CLAUDE.md
 /src/generated/prisma
 .vscode/
+.claude/
