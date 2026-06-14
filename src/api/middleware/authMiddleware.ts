@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { getSession } from "../../services/EveSsoService.js";
+import {
+  getSession,
+  deleteExpiredSessions,
+} from "../../services/EveSsoService.js";
 import { HttpException } from "../../exceptions/HttpException.js";
+import logger from "../../loaders/logger.js";
 
 async function auth(req: Request, res: Response, next: NextFunction) {
   const sessionCookie = req.signedCookies.session;
@@ -12,6 +16,9 @@ async function auth(req: Request, res: Response, next: NextFunction) {
   const session = await getSession(sessionCookie);
 
   if (!session) {
+    deleteExpiredSessions().catch((error) => {
+      logger.error("Failed to delete expired sessions.", error);
+    });
     throw new HttpException(401, "Invalid session.");
   }
 

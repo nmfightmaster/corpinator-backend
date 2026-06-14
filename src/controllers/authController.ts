@@ -68,7 +68,7 @@ async function logout(req: Request, res: Response) {
   if (sessionCookie) {
     await deleteSession(sessionCookie);
   }
-    
+
   res.clearCookie("session");
   res.sendStatus(200);
 }
