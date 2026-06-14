@@ -27,4 +27,4 @@ async function auth(req: Request, res: Response, next: NextFunction) {
   return next();
 }
 
-export { auth };
+export default auth;
