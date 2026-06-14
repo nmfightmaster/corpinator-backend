@@ -1,9 +1,8 @@
 # [1.8.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.7.0...v1.8.0) (2026-06-14)
 
-
 ### Features
 
-* implement EVE access token refresh ([3996b4d](https://github.com/nmfightmaster/corpinator-backend-v2/commit/3996b4d35dedcd80d887cba369436b0cc35f57ea))
+- implement EVE access token refresh ([3996b4d](https://github.com/nmfightmaster/corpinator-backend-v2/commit/3996b4d35dedcd80d887cba369436b0cc35f57ea))
 
 # [1.7.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.6.1...v1.7.0) (2026-06-14)
 
