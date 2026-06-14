@@ -13,9 +13,7 @@ export function encrypt(plaintext: string): string {
   const combinedHex = plaintextHex + finalHex;
   const authTag = cipher.getAuthTag();
 
-  return (
-    iv.toString("hex") + ":" + authTag.toString("hex") + ":" + combinedHex
-  );
+  return iv.toString("hex") + ":" + authTag.toString("hex") + ":" + combinedHex;
 }
 
 export function decrypt(ciphertext: string): string {
