@@ -96,10 +96,20 @@ function createSession(characterId: number): Promise<SessionModel> {
   });
 }
 
+function getSession(sessionId: string) {
+  return prismaClient.session.findUnique({
+    where: {
+      id: sessionId,
+      expiresAt: { gt: new Date() },
+    },
+  });
+}
+
 export {
   buildAuthUrl,
   exchangeCodeForTokens,
   decodeCharacterFromToken,
   upsertCharacter,
   createSession,
+  getSession,
 };
