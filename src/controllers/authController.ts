@@ -47,6 +47,7 @@ async function callback(req: Request, res: Response) {
   await upsertCharacter(
     character.characterId,
     character.characterName,
+    tokens.access_token,
     tokens.refresh_token,
   );
 

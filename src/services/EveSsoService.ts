@@ -78,11 +78,12 @@ function decodeCharacterFromToken(accessToken: string): {
 function upsertCharacter(
   characterId: number,
   characterName: string,
+  accessToken: string,
   refreshToken: string,
 ): Promise<CharacterModel> {
   return prismaClient.character.upsert({
     where: { id: characterId },
-    create: { id: characterId, name: characterName, refreshToken },
+    create: { id: characterId, name: characterName, accessToken, refreshToken },
     update: { refreshToken },
   });
 }
