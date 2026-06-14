@@ -27,7 +27,9 @@ function buildAuthUrl(state: string): string {
   return `${authorizationEndpoint}?${params.toString()}`;
 }
 
-async function exchangeCodeForTokens(code: string): Promise<EveTokenResponse> {
+async function exchangeCodeForTokens(
+  code: string,
+): Promise<EveTokenResponse> {
   const params = new URLSearchParams({
     grant_type: "authorization_code",
     code,
@@ -56,6 +58,7 @@ async function exchangeCodeForTokens(code: string): Promise<EveTokenResponse> {
 function decodeCharacterFromToken(accessToken: string): {
   characterId: number;
   characterName: string;
+  exp: number;
 } {
   const payloadBase64 = accessToken.split(".")[1];
   if (!payloadBase64) {
@@ -65,6 +68,7 @@ function decodeCharacterFromToken(accessToken: string): {
   const payload = JSON.parse(payloadJson) as EveJwtPayload;
   const characterId = parseInt(payload.sub.split(":").pop() || "", 10);
   const characterName = payload.name;
+  const exp = payload.exp;
 
   if (isNaN(characterId)) {
     throw new SsoException(
@@ -73,7 +77,7 @@ function decodeCharacterFromToken(accessToken: string): {
     );
   }
 
-  return { characterId, characterName };
+  return { characterId, characterName, exp };
 }
 
 function upsertCharacter(
@@ -144,6 +148,65 @@ function deleteExpiredSessions() {
   });
 }
 
+async function getValidAccessToken(characterId: number) {
+  const character = await getCharacter(characterId);
+  
+  if (!character) {
+    throw new Error("Character not found.");
+  }
+
+  const accessToken = character.accessToken;
+  const decryptedAccessToken = decrypt(accessToken);
+  const exp = decodeCharacterFromToken(decryptedAccessToken).exp;
+
+  if (exp * 1000 < (Date.now() + 60000)) {
+    const decryptedRefreshToken = decrypt(character.refreshToken);
+    const newTokens = await refreshTokens(decryptedRefreshToken);
+    await upsertCharacter(
+      characterId,
+      character.name,
+      newTokens.access_token,
+      newTokens.refresh_token,      
+    );
+    return (newTokens.access_token);
+  }
+
+  return decryptedAccessToken;
+}
+
+
+function getCharacter(characterId: number) {
+  return prismaClient.character.findUnique({
+    where: { id: characterId },
+  });
+}
+
+async function refreshTokens(refreshToken: string): Promise<EveTokenResponse> {
+  const params = new URLSearchParams({
+    grant_type: "refresh_token",
+    refresh_token: refreshToken,
+  });
+
+  const response = await fetch(tokenEndpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${Buffer.from(`${config.eve.clientId}:${config.eve.clientSecret}`).toString("base64")}`,
+    },
+    body: params.toString(),
+  });
+
+  if (!response.ok) {
+    throw new SsoException(
+      response.status,
+      `Failed to refresh token: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  const data = (await response.json()) as EveTokenResponse;
+  return data;
+}
+
 export {
   buildAuthUrl,
   exchangeCodeForTokens,
@@ -153,4 +216,5 @@ export {
   getSession,
   deleteSession,
   deleteExpiredSessions,
+  getValidAccessToken,
 };
