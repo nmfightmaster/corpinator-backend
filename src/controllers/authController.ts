@@ -5,6 +5,7 @@ import {
   decodeCharacterFromToken,
   upsertCharacter,
   createSession,
+  deleteSession,
 } from "../services/EveSsoService.js";
 import config from "../config/index.js";
 import { HttpException } from "../exceptions/HttpException.js";
@@ -61,4 +62,15 @@ async function callback(req: Request, res: Response) {
   config.frontendUrl ? res.redirect(config.frontendUrl) : res.sendStatus(200);
 }
 
-export { login, callback };
+async function logout(req: Request, res: Response) {
+  const sessionCookie = req.signedCookies.session;
+
+  if (sessionCookie) {
+    await deleteSession(sessionCookie);
+  }
+    
+  res.clearCookie("session");
+  res.sendStatus(200);
+}
+
+export { login, callback, logout };

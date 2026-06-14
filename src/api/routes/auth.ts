@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, callback } from "../../controllers/authController.js";
+import { login, callback, logout } from "../../controllers/authController.js";
 
 const router = Router();
 
@@ -8,4 +8,5 @@ export default (app: Router) => {
 
   router.get("/login", login);
   router.get("/callback", callback);
+  router.delete("/logout", logout);
 };

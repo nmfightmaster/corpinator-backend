@@ -12,7 +12,7 @@ import type {
   CharacterModel,
   SessionModel,
 } from "../generated/prisma/models.js";
-import logger from "../loaders/logger.js";
+import { Prisma } from "../generated/prisma/client.js";
 
 function buildAuthUrl(state: string): string {
   const params = new URLSearchParams({
@@ -105,6 +105,24 @@ function getSession(sessionId: string) {
   });
 }
 
+async function deleteSession(sessionId: string) {
+  try {
+    return await prismaClient.session.delete({
+      where: {
+        id: sessionId,
+      },
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      return;
+    }
+    throw error;
+  }
+}
+
 export {
   buildAuthUrl,
   exchangeCodeForTokens,
@@ -112,4 +130,5 @@ export {
   upsertCharacter,
   createSession,
   getSession,
+  deleteSession,
 };
