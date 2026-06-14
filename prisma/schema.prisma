@@ -16,6 +16,7 @@ datasource db {
 model Character {
   id           Int       @id
   name         String
+  accessToken  String    @map("access_token")
   refreshToken String    @map("refresh_token")
   sessions     Session[]
   createdAt    DateTime  @default(now()) @map("created_at")
