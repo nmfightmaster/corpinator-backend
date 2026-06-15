@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.9.0...v1.9.1) (2026-06-14)
+
+
+### Bug Fixes
+
+* add sameSite to cookies in authController ([12f5f9e](https://github.com/nmfightmaster/corpinator-backend-v2/commit/12f5f9e7054277e757e23d5b7605e9ff6837868e))
+
 # [1.9.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.8.0...v1.9.0) (2026-06-14)
 
 
