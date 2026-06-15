@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.13.0...v1.14.0) (2026-06-15)
+
+
+### Features
+
+* move stale session cleanup to cron ([f342ab1](https://github.com/nmfightmaster/corpinator-backend-v2/commit/f342ab19549e3d2d38fd469ba5bfb2580db16f8c))
+
 # [1.13.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.12.0...v1.13.0) (2026-06-15)
 
 
