@@ -17,6 +17,11 @@ import { Prisma } from "../generated/prisma/client.js";
 import { encrypt, decrypt } from "../util/cryptoUtil.js";
 import * as jose from "jose";
 
+type CharacterRow = {
+  access_token: string,
+  refresh_token: string
+}
+
 function buildAuthUrl(state: string): string {
   const params = new URLSearchParams({
     response_type: "code",
@@ -150,36 +155,36 @@ async function getValidAccessToken(characterId: number) {
   if (!character) {
     throw new Error("Character not found.");
   }
-  let decodedCharacter;
   let needsRefresh = false;
   const decryptedAccessToken = decrypt(character.accessToken);
-  try {
-    decodedCharacter = await decodeCharacterFromToken(decryptedAccessToken);
-    const exp = decodedCharacter.exp;
-    if (!exp) {
-      throw new SsoException(502, "Invalid token: missing exp claim.");
-    }
-    if (exp * 1000 < Date.now() + 60000) {
-      needsRefresh = true;
-    }
-  } catch (error) {
-    if (!(error instanceof jose.errors.JWTExpired)) {
-      throw error;
-    }
-    needsRefresh = true;
+  needsRefresh = await checkTokenExpired(decryptedAccessToken);
+  if (!needsRefresh) {
+    return decryptedAccessToken;
   }
-  if (needsRefresh) {
-    const decryptedRefreshToken = decrypt(character.refreshToken);
-    const newTokens = await refreshTokens(decryptedRefreshToken);
-    await upsertCharacter(
-      characterId,
-      character.name,
-      newTokens.access_token,
-      newTokens.refresh_token,
+  const accessToken = await prismaClient.$transaction(async (tx) => {
+    const rows =
+      await tx.$queryRaw<CharacterRow[]>`SELECT access_token, refresh_token FROM characters WHERE id = ${characterId} FOR UPDATE`;
+    if (rows.length === 0) {
+      throw new Error("Character not found.")
+    }
+    const duplicateRefreshCheck = await checkTokenExpired(
+      decrypt(rows[0].access_token),
     );
-    return newTokens.access_token;
-  }
-  return decryptedAccessToken;
+    if (duplicateRefreshCheck) {
+      const newTokens = await refreshTokens(decrypt(rows[0].refresh_token));
+      await tx.character.update({
+        where: { id: characterId },
+        data: {
+          accessToken: encrypt(newTokens.access_token),
+          refreshToken: encrypt(newTokens.refresh_token),
+        },
+      });
+      return newTokens.access_token;
+    } else {
+      return decrypt(rows[0].access_token);
+    }
+  });
+  return accessToken;
 }
 
 function getCharacter(characterId: number) {
@@ -212,6 +217,22 @@ async function refreshTokens(refreshToken: string): Promise<EveTokenResponse> {
 
   const data = (await response.json()) as EveTokenResponse;
   return data;
+}
+
+async function checkTokenExpired(unencryptedToken: string) {
+  try {
+    const decodedCharacter = await decodeCharacterFromToken(unencryptedToken);
+    const exp = decodedCharacter.exp;
+    if (exp * 1000 < Date.now() + 60000) {
+      return true;
+    }
+  } catch (error) {
+    if (!(error instanceof jose.errors.JWTExpired)) {
+      throw error;
+    }
+    return true;
+  }
+  return false;
 }
 
 export {
