@@ -57,7 +57,7 @@ const origins = (process.env.CORS_ALLOWED_ORIGINS || "")
 
 const secureCookiesString = process.env.SECURE_COOKIES!.toLowerCase();
 const falsyValues = ["no", "false", "0"];
-const secureCookies = !falsyValues.includes(secureCookiesString)
+const secureCookies = !falsyValues.includes(secureCookiesString);
 
 const config: Config = {
   port: Number(process.env.PORT) || 3000,

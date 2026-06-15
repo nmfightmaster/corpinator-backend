@@ -78,11 +78,13 @@ async function logout(req: Request, res: Response) {
     await deleteSession(sessionCookie);
   }
 
-  res.clearCookie("session", {httpOnly: true,
+  res.clearCookie("session", {
+    httpOnly: true,
     signed: true,
     secure: config.secureCookies,
     maxAge: config.session.eveSessionTtlMs,
-    sameSite: "lax",});
+    sameSite: "lax",
+  });
   res.sendStatus(200);
 }
 

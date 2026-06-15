@@ -1,9 +1,8 @@
 # [1.12.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.11.0...v1.12.0) (2026-06-15)
 
-
 ### Features
 
-* establish robust error handling ([f8c6fba](https://github.com/nmfightmaster/corpinator-backend-v2/commit/f8c6fba1c77002a021b91269e40bcd23ae29b37b))
+- establish robust error handling ([f8c6fba](https://github.com/nmfightmaster/corpinator-backend-v2/commit/f8c6fba1c77002a021b91269e40bcd23ae29b37b))
 
 # [1.11.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.10.0...v1.11.0) (2026-06-15)
 
