@@ -16,7 +16,7 @@ async function login(req: Request, res: Response) {
   res.cookie("state", state, {
     httpOnly: true,
     signed: true,
-    secure: config.nodeEnv === "production",
+    secure: config.secureCookies,
     maxAge: 300000,
     sameSite: "lax",
   });
@@ -39,7 +39,13 @@ async function callback(req: Request, res: Response) {
     throw new HttpException(400, "Provided code is not a string.");
   }
 
-  res.clearCookie("state");
+  res.clearCookie("state", {
+    httpOnly: true,
+    signed: true,
+    secure: config.secureCookies,
+    maxAge: 300000,
+    sameSite: "lax",
+  });
 
   const tokens = await exchangeCodeForTokens(code);
 
@@ -57,7 +63,7 @@ async function callback(req: Request, res: Response) {
   res.cookie("session", session.id, {
     httpOnly: true,
     signed: true,
-    secure: config.nodeEnv === "production",
+    secure: config.secureCookies,
     maxAge: config.session.eveSessionTtlMs,
     sameSite: "lax",
   });
@@ -72,7 +78,11 @@ async function logout(req: Request, res: Response) {
     await deleteSession(sessionCookie);
   }
 
-  res.clearCookie("session");
+  res.clearCookie("session", {httpOnly: true,
+    signed: true,
+    secure: config.secureCookies,
+    maxAge: config.session.eveSessionTtlMs,
+    sameSite: "lax",});
   res.sendStatus(200);
 }
 

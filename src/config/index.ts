@@ -30,19 +30,8 @@ interface Config {
   crypto: {
     encryptionKey: string;
   };
+  secureCookies: boolean;
 }
-
-const sessionSecret = process.env.SESSION_SECRET;
-const databaseUrl = process.env.DATABASE_URL;
-const clientId = process.env.EVE_CLIENT_ID;
-const clientSecret = process.env.EVE_CLIENT_SECRET;
-const redirectUri = process.env.EVE_REDIRECT_URI;
-const baseUrl = process.env.EVE_BASE_URL;
-const compatibilityDate = process.env.EVE_COMPATIBILITY_DATE;
-const origins = (process.env.CORS_ALLOWED_ORIGINS || "")
-  .split(",")
-  .map((s) => s.trim());
-const encryptionKey = process.env.ENCRYPTION_KEY;
 
 const requiredVars = [
   "SESSION_SECRET",
@@ -54,11 +43,21 @@ const requiredVars = [
   "ENCRYPTION_KEY",
   "EVE_BASE_URL",
   "EVE_COMPATIBILITY_DATE",
+  "SECURE_COOKIES",
+  "FRONTEND_URL",
 ];
 
 for (const varName of requiredVars) {
   if (!process.env[varName]) throw new Error(`${varName} not set.`);
 }
+
+const origins = (process.env.CORS_ALLOWED_ORIGINS || "")
+  .split(",")
+  .map((s) => s.trim());
+
+const secureCookiesString = process.env.SECURE_COOKIES!.toLowerCase();
+const falsyValues = ["no", "false", "0"];
+const secureCookies = !falsyValues.includes(secureCookiesString)
 
 const config: Config = {
   port: Number(process.env.PORT) || 3000,
@@ -69,25 +68,26 @@ const config: Config = {
   api: {
     prefix: "/api",
   },
-  databaseUrl: databaseUrl!,
+  databaseUrl: process.env.DATABASE_URL!,
   eve: {
-    clientId: clientId!,
-    clientSecret: clientSecret!,
-    redirectUri: redirectUri!,
-    baseUrl: baseUrl!,
-    compatibilityDate: compatibilityDate!,
+    clientId: process.env.EVE_CLIENT_ID!,
+    clientSecret: process.env.EVE_CLIENT_SECRET!,
+    redirectUri: process.env.EVE_REDIRECT_URI!,
+    baseUrl: process.env.EVE_BASE_URL!,
+    compatibilityDate: process.env.EVE_COMPATIBILITY_DATE!,
   },
   session: {
     eveSessionTtlMs: Number(process.env.EVE_SESSION_TTL_MS) || 86400000,
-    secret: sessionSecret!,
+    secret: process.env.SESSION_SECRET!,
   },
   cors: {
-    origins: origins,
+    origins,
   },
-  frontendUrl: process.env.FRONTEND_URL || "",
+  frontendUrl: process.env.FRONTEND_URL!,
   crypto: {
-    encryptionKey: encryptionKey!,
+    encryptionKey: process.env.ENCRYPTION_KEY!,
   },
+  secureCookies: secureCookies,
 };
 
 export default config;
