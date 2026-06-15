@@ -1,10 +1,12 @@
 import logger from "./logger.js";
 import { SsoException } from "../exceptions/SsoException.js";
+import * as jose from "jose";
 
 export let authorizationEndpoint = "";
 export let tokenEndpoint = "";
-export let jwksUri = "";
+let jwksUri = "";
 export let revokeEndpoint = "";
+export let jwks: ReturnType<typeof jose.createRemoteJWKSet>;
 
 export async function loadEveAuthURLs() {
   try {
@@ -22,6 +24,7 @@ export async function loadEveAuthURLs() {
     tokenEndpoint = data.token_endpoint;
     jwksUri = data.jwks_uri;
     revokeEndpoint = data.revocation_endpoint;
+    jwks = jose.createRemoteJWKSet(new URL(jwksUri));
   } catch (error) {
     logger.error(`Error loading EVE Online auth URLs: ${error}`);
     throw error;

@@ -43,7 +43,7 @@ async function callback(req: Request, res: Response) {
 
   const tokens = await exchangeCodeForTokens(code);
 
-  const character = decodeCharacterFromToken(tokens.access_token);
+  const character = await decodeCharacterFromToken(tokens.access_token);
 
   await upsertCharacter(
     character.characterId,

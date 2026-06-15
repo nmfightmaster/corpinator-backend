@@ -1,6 +1,7 @@
 import {
   authorizationEndpoint,
   tokenEndpoint,
+  jwks,
 } from "../loaders/eveAuthURLs.js";
 import scopesString from "../config/scopes/scopes.js";
 import config from "../config/index.js";
@@ -14,6 +15,7 @@ import type {
 } from "../generated/prisma/models.js";
 import { Prisma } from "../generated/prisma/client.js";
 import { encrypt, decrypt } from "../util/cryptoUtil.js";
+import * as jose from "jose";
 
 function buildAuthUrl(state: string): string {
   const params = new URLSearchParams({
@@ -53,28 +55,25 @@ async function exchangeCodeForTokens(code: string): Promise<EveTokenResponse> {
   return data;
 }
 
-function decodeCharacterFromToken(accessToken: string): {
+async function decodeCharacterFromToken(accessToken: string): Promise<{
   characterId: number;
   characterName: string;
   exp: number;
-} {
-  const payloadBase64 = accessToken.split(".")[1];
-  if (!payloadBase64) {
-    throw new SsoException(502, "Invalid token: missing payload segment.");
-  }
-  const payloadJson = Buffer.from(payloadBase64, "base64url").toString("utf-8");
-  const payload = JSON.parse(payloadJson) as EveJwtPayload;
+}> {
+  const verifiedJwt = await jose.jwtVerify<EveJwtPayload>(accessToken, jwks, {
+    issuer: ["https://login.eveonline.com", "login.eveonline.com"],
+    audience: [config.eve.clientId, "EVE Online"],
+  });
+  const payload = verifiedJwt.payload;
   const characterId = parseInt(payload.sub.split(":").pop() || "", 10);
-  const characterName = payload.name;
-  const exp = payload.exp;
-
   if (isNaN(characterId)) {
     throw new SsoException(
       502,
       "Invalid token: unable to extract character ID from sub claim.",
     );
   }
-
+  const characterName = payload.name;
+  const exp = payload.exp;
   return { characterId, characterName, exp };
 }
 
@@ -148,16 +147,28 @@ function deleteExpiredSessions() {
 
 async function getValidAccessToken(characterId: number) {
   const character = await getCharacter(characterId);
-
   if (!character) {
     throw new Error("Character not found.");
   }
-
-  const accessToken = character.accessToken;
-  const decryptedAccessToken = decrypt(accessToken);
-  const exp = decodeCharacterFromToken(decryptedAccessToken).exp;
-
-  if (exp * 1000 < Date.now() + 60000) {
+  let decodedCharacter;
+  let needsRefresh = false;
+  const decryptedAccessToken = decrypt(character.accessToken);
+  try {
+    decodedCharacter = await decodeCharacterFromToken(decryptedAccessToken);
+    const exp = decodedCharacter.exp;
+    if (!exp) {
+      throw new SsoException(502, "Invalid token: missing exp claim.");
+    }
+    if (exp * 1000 < Date.now() + 60000) {
+      needsRefresh = true;
+    }
+  } catch (error) {
+    if (!(error instanceof jose.errors.JWTExpired)) {
+      throw error;
+    }
+    needsRefresh = true;
+  }
+  if (needsRefresh) {
     const decryptedRefreshToken = decrypt(character.refreshToken);
     const newTokens = await refreshTokens(decryptedRefreshToken);
     await upsertCharacter(
@@ -168,7 +179,6 @@ async function getValidAccessToken(characterId: number) {
     );
     return newTokens.access_token;
   }
-
   return decryptedAccessToken;
 }
 
