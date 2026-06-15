@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.14.0...v1.15.0) (2026-06-15)
+
+
+### Features
+
+* implement default headers and create x-user-agent header ([ac3d07f](https://github.com/nmfightmaster/corpinator-backend/commit/ac3d07f94bc8335f452adac4391781e3c547132a))
+
 # [1.14.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.13.0...v1.14.0) (2026-06-15)
 
 
