@@ -35,6 +35,10 @@ interface Config {
   };
   secureCookies: boolean;
   trustProxy: number | false;
+  rateLimit: {
+    authWindowMs: number;
+    authLimit: number;
+  }
 }
 
 const requiredVars = [
@@ -119,6 +123,10 @@ const config: Config = {
   },
   secureCookies,
   trustProxy,
+  rateLimit: {
+    authWindowMs: Number(process.env.AUTH_RATE_LIMIT_WINDOW_MS) || 900000,
+    authLimit: Number(process.env.AUTH_RATE_LIMIT_MAX) || 20,
+  }
 };
 
 export default config;
