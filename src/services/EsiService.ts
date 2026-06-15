@@ -17,7 +17,10 @@ async function fetchCharacterDetail(characterId: number) {
   });
 
   if (!response.ok) {
-    throw new EsiException(response.status,`ESI request failed: ${response.status} ${response.statusText}`)
+    throw new EsiException(
+      response.status,
+      `ESI request failed: ${response.status} ${response.statusText}`,
+    );
   }
 
   const data = (await response.json()) as CharacterDetail;

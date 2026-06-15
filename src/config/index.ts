@@ -37,8 +37,8 @@ const databaseUrl = process.env.DATABASE_URL;
 const clientId = process.env.EVE_CLIENT_ID;
 const clientSecret = process.env.EVE_CLIENT_SECRET;
 const redirectUri = process.env.EVE_REDIRECT_URI;
-const baseUrl = process.env.EVE_BASE_URL
-const compatibilityDate = process.env.EVE_COMPATIBILITY_DATE
+const baseUrl = process.env.EVE_BASE_URL;
+const compatibilityDate = process.env.EVE_COMPATIBILITY_DATE;
 const origins = (process.env.CORS_ALLOWED_ORIGINS || "")
   .split(",")
   .map((s) => s.trim());
