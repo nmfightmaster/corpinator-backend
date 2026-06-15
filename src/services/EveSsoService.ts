@@ -18,9 +18,9 @@ import { encrypt, decrypt } from "../util/cryptoUtil.js";
 import * as jose from "jose";
 
 type CharacterRow = {
-  access_token: string,
-  refresh_token: string
-}
+  access_token: string;
+  refresh_token: string;
+};
 
 function buildAuthUrl(state: string): string {
   const params = new URLSearchParams({
@@ -162,10 +162,11 @@ async function getValidAccessToken(characterId: number) {
     return decryptedAccessToken;
   }
   const accessToken = await prismaClient.$transaction(async (tx) => {
-    const rows =
-      await tx.$queryRaw<CharacterRow[]>`SELECT access_token, refresh_token FROM characters WHERE id = ${characterId} FOR UPDATE`;
+    const rows = await tx.$queryRaw<
+      CharacterRow[]
+    >`SELECT access_token, refresh_token FROM characters WHERE id = ${characterId} FOR UPDATE`;
     if (rows.length === 0) {
-      throw new Error("Character not found.")
+      throw new Error("Character not found.");
     }
     const duplicateRefreshCheck = await checkTokenExpired(
       decrypt(rows[0].access_token),

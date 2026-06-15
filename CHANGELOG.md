@@ -1,9 +1,8 @@
 # [1.10.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.9.1...v1.10.0) (2026-06-15)
 
-
 ### Features
 
-* implement jwks verification of tokens ([ce4c616](https://github.com/nmfightmaster/corpinator-backend-v2/commit/ce4c616219bab4bf0ede7dfd22f18830d1d9ab85))
+- implement jwks verification of tokens ([ce4c616](https://github.com/nmfightmaster/corpinator-backend-v2/commit/ce4c616219bab4bf0ede7dfd22f18830d1d9ab85))
 
 ## [1.9.1](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.9.0...v1.9.1) (2026-06-14)
 
