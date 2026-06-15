@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.16.1...v1.17.0) (2026-06-15)
+
+
+### Features
+
+* validate secret strength at boot ([032a34a](https://github.com/nmfightmaster/corpinator-backend/commit/032a34ae2fc21fecf041edfc3289cb71d33f6481))
+
 ## [1.16.1](https://github.com/nmfightmaster/corpinator-backend/compare/v1.16.0...v1.16.1) (2026-06-15)
 
 
