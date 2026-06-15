@@ -15,7 +15,7 @@ export default ({ app }: { app: express.Application }) => {
 
   app.use(cookieParser(config.session.secret));
 
-  app.enable("trust proxy");
+  app.set("trust proxy", config.trustProxy);
 
   app.use(config.api.prefix, routes());
 

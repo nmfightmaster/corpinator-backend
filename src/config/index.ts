@@ -34,6 +34,7 @@ interface Config {
     encryptionKey: string;
   };
   secureCookies: boolean;
+  trustProxy: number | false;
 }
 
 const requiredVars = [
@@ -50,6 +51,7 @@ const requiredVars = [
   "FRONTEND_URL",
   "EVE_EMAIL",
   "EVE_APP_NAME",
+  "TRUST_PROXY",
 ];
 
 for (const varName of requiredVars) {
@@ -70,9 +72,11 @@ const userAgentComponents = [
 
 const userAgent = userAgentComponents.filter(Boolean).join(" ");
 
-const secureCookiesString = process.env.SECURE_COOKIES!.toLowerCase();
 const falsyValues = ["no", "false", "0"];
+const secureCookiesString = process.env.SECURE_COOKIES!.toLowerCase();
 const secureCookies = !falsyValues.includes(secureCookiesString);
+
+const trustProxy = process.env.TRUST_PROXY === "1" ? 1 : false
 
 const config: Config = {
   port: Number(process.env.PORT) || 3000,
@@ -104,6 +108,7 @@ const config: Config = {
     encryptionKey: process.env.ENCRYPTION_KEY!,
   },
   secureCookies,
+  trustProxy,
 };
 
 export default config;
