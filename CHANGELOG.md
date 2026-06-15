@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.15.0...v1.16.0) (2026-06-15)
+
+
+### Features
+
+* revoke refresh token on logout ([7ee2df5](https://github.com/nmfightmaster/corpinator-backend/commit/7ee2df5b84338f012d012841518013b0062c9738))
+
 # [1.15.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.14.0...v1.15.0) (2026-06-15)
 
 
