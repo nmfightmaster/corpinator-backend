@@ -1,3 +1,10 @@
+## [1.17.1](https://github.com/nmfightmaster/corpinator-backend/compare/v1.17.0...v1.17.1) (2026-06-15)
+
+
+### Bug Fixes
+
+* implement helmet ([9c9f5e1](https://github.com/nmfightmaster/corpinator-backend/commit/9c9f5e1aca1491e66adfc24f0f2830c3075af5a6))
+
 # [1.17.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.16.1...v1.17.0) (2026-06-15)
 
 
