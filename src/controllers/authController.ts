@@ -5,7 +5,7 @@ import {
   decodeCharacterFromToken,
   upsertCharacter,
   createSession,
-  deleteSession,
+  logoutSession,
 } from "../services/EveSsoService.js";
 import config from "../config/index.js";
 import { HttpException } from "../exceptions/HttpException.js";
@@ -75,7 +75,7 @@ async function logout(req: Request, res: Response) {
   const sessionCookie = req.signedCookies.session;
 
   if (sessionCookie) {
-    await deleteSession(sessionCookie);
+    await logoutSession(sessionCookie);
   }
 
   res.clearCookie("session", {

@@ -1,6 +1,7 @@
 import {
   authorizationEndpoint,
   tokenEndpoint,
+  revokeEndpoint,
   jwks,
 } from "../loaders/eveAuthURLs.js";
 import scopesString from "../config/scopes/scopes.js";
@@ -16,6 +17,7 @@ import type {
 import { Prisma } from "../generated/prisma/client.js";
 import { encrypt, decrypt } from "../util/cryptoUtil.js";
 import * as jose from "jose";
+import logger from "../loaders/logger.js";
 
 type CharacterRow = {
   access_token: string;
@@ -142,6 +144,28 @@ async function deleteSession(sessionId: string) {
   }
 }
 
+async function logoutSession(sessionId: string) {
+  const session = await prismaClient.session.findUnique({
+    where: {
+      id: sessionId,
+    },
+  });
+  if (!session) {
+    return;
+  }
+  const character = await getCharacter(session.characterId);
+  if (!character) {
+    throw new SsoException(404, "Character not found.");
+  }
+  const encryptedRefreshToken = character.refreshToken;
+  try {
+    await revokeRefreshToken(decrypt(encryptedRefreshToken));
+  } catch (error) {
+    logger.error(error);
+  }
+  await deleteSession(sessionId);
+}
+
 function deleteExpiredSessions() {
   return prismaClient.session.deleteMany({
     where: {
@@ -220,6 +244,22 @@ async function refreshTokens(refreshToken: string): Promise<EveTokenResponse> {
   return data;
 }
 
+async function revokeRefreshToken(refreshToken: string): Promise<void> {
+  const params = new URLSearchParams({
+    token: refreshToken,
+    token_type_hint: "refresh_token",
+  });
+
+  await fetch(revokeEndpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${Buffer.from(`${config.eve.clientId}:${config.eve.clientSecret}`).toString("base64")}`,
+    },
+    body: params.toString(),
+  });
+}
+
 async function checkTokenExpired(unencryptedToken: string) {
   try {
     const decodedCharacter = await decodeCharacterFromToken(unencryptedToken);
@@ -243,7 +283,7 @@ export {
   upsertCharacter,
   createSession,
   getSession,
-  deleteSession,
+  logoutSession,
   deleteExpiredSessions,
   getValidAccessToken,
 };
