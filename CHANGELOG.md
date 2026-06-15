@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/nmfightmaster/corpinator-backend/compare/v1.16.0...v1.16.1) (2026-06-15)
+
+
+### Bug Fixes
+
+* harden trust proxy ([390bf5e](https://github.com/nmfightmaster/corpinator-backend/commit/390bf5e58bc7f9e1c342e3e184d8bab7a60e9e18))
+
 # [1.16.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.15.0...v1.16.0) (2026-06-15)
 
 
