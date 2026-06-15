@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+import pkg from "../../package.json" with { type: "json" };
+const { version } = pkg;
 
 dotenv.config();
 
@@ -18,6 +20,7 @@ interface Config {
     redirectUri: string;
     baseUrl: string;
     compatibilityDate: string;
+    userAgent: string;
   };
   session: {
     eveSessionTtlMs: number;
@@ -45,6 +48,8 @@ const requiredVars = [
   "EVE_COMPATIBILITY_DATE",
   "SECURE_COOKIES",
   "FRONTEND_URL",
+  "EVE_EMAIL",
+  "EVE_APP_NAME",
 ];
 
 for (const varName of requiredVars) {
@@ -54,6 +59,16 @@ for (const varName of requiredVars) {
 const origins = (process.env.CORS_ALLOWED_ORIGINS || "")
   .split(",")
   .map((s) => s.trim());
+
+const userAgentComponents = [
+  process.env.EVE_EMAIL,
+  process.env.EVE_APP_NAME! + "/" + version,
+  process.env.EVE_SOURCE_CODE_URL,
+  process.env.EVE_DISCORD_USERNAME,
+  process.env.EVE_CHARACTER,
+];
+
+const userAgent = userAgentComponents.filter(Boolean).join(" ");
 
 const secureCookiesString = process.env.SECURE_COOKIES!.toLowerCase();
 const falsyValues = ["no", "false", "0"];
@@ -75,6 +90,7 @@ const config: Config = {
     redirectUri: process.env.EVE_REDIRECT_URI!,
     baseUrl: process.env.EVE_BASE_URL!,
     compatibilityDate: process.env.EVE_COMPATIBILITY_DATE!,
+    userAgent,
   },
   session: {
     eveSessionTtlMs: Number(process.env.EVE_SESSION_TTL_MS) || 86400000,
@@ -87,7 +103,7 @@ const config: Config = {
   crypto: {
     encryptionKey: process.env.ENCRYPTION_KEY!,
   },
-  secureCookies: secureCookies,
+  secureCookies,
 };
 
 export default config;
