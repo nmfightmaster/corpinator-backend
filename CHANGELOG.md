@@ -1,9 +1,8 @@
 # [1.11.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.10.0...v1.11.0) (2026-06-15)
 
-
 ### Features
 
-* prevent lockout due to token refresh race ([2f149da](https://github.com/nmfightmaster/corpinator-backend-v2/commit/2f149da3427a7752716e7af511ca542c8e345086))
+- prevent lockout due to token refresh race ([2f149da](https://github.com/nmfightmaster/corpinator-backend-v2/commit/2f149da3427a7752716e7af511ca542c8e345086))
 
 # [1.10.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.9.1...v1.10.0) (2026-06-15)
 
