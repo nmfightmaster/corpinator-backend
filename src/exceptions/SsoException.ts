@@ -1,10 +1,3 @@
-export class SsoException extends Error {
-  public status: number;
-  public message: string;
+import { AppException } from "./AppException.js";
 
-  constructor(status: number, message: string) {
-    super(message);
-    this.status = status;
-    this.message = message;
-  }
-}
+export class SsoException extends AppException {}

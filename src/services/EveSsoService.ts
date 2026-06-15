@@ -153,7 +153,7 @@ function deleteExpiredSessions() {
 async function getValidAccessToken(characterId: number) {
   const character = await getCharacter(characterId);
   if (!character) {
-    throw new Error("Character not found.");
+    throw new SsoException(404, "Character not found.");
   }
   let needsRefresh = false;
   const decryptedAccessToken = decrypt(character.accessToken);
@@ -166,7 +166,7 @@ async function getValidAccessToken(characterId: number) {
       CharacterRow[]
     >`SELECT access_token, refresh_token FROM characters WHERE id = ${characterId} FOR UPDATE`;
     if (rows.length === 0) {
-      throw new Error("Character not found.");
+      throw new SsoException(404, "Character not found.");
     }
     const duplicateRefreshCheck = await checkTokenExpired(
       decrypt(rows[0].access_token),

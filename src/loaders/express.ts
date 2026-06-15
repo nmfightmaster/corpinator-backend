@@ -3,7 +3,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import routes from "../api/index.js";
 import config from "../config/index.js";
+import logger from "../loaders/logger.js";
 
+import { AppException } from "../exceptions/AppException.js";
 import { HttpException } from "../exceptions/HttpException.js";
 
 export default ({ app }: { app: express.Application }) => {
@@ -24,17 +26,17 @@ export default ({ app }: { app: express.Application }) => {
 
   app.use(
     (
-      err: HttpException,
+      err: Error,
       req: express.Request,
       res: express.Response,
       next: express.NextFunction,
     ) => {
-      res.status(err.status || 500);
-      res.json({
-        errors: {
-          message: err.message,
-        },
-      });
+      if (err instanceof AppException) {
+        res.status(err.status).json({ message: err.message });
+      } else {
+        logger.error("Unexpected error", err);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
     },
   );
 };
