@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { fetchCharacterDetail } from "../services/EsiService.js";
+import { fetchCharacterDetail } from "../services/esi/Character.js";
 import { HttpException } from "../exceptions/HttpException.js";
 
 async function getCharacter(req: Request, res: Response) {

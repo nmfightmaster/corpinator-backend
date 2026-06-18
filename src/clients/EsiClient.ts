@@ -1,7 +1,6 @@
 import config from "../config/index.js";
-import { getValidAccessToken } from "./EveSsoService.js";
+import { getValidAccessToken } from "../services/EveSsoService.js";
 import { EsiException } from "../exceptions/EsiException.js";
-import CharacterDetail from "../models/CharacterDetail.js";
 import EveRateLimit from "../models/EveRateLimit.js";
 import EveErrorLimit from "../models/EveErrorLimit.js";
 import logger from "../loaders/logger.js";
@@ -108,6 +107,23 @@ async function clientFetch(
   return response;
 }
 
+async function authenticatedFetch(
+  method: string,
+  endpoint: string,
+  characterId: number,
+  options: RequestInit = {},
+) {
+  const accessToken = await getValidAccessToken(characterId);
+  const response = await clientFetch(
+    method,
+    endpoint,
+    characterId,
+    accessToken,
+    options,
+  );
+  return response;
+}
+
 function setRateLimit(state: EveRateLimit, characterId?: number) {
   if (characterId) {
     characterRateLimitMap.set(characterId, state);
@@ -140,16 +156,4 @@ function parseRateLimitLimitHeader(rateLimitLimitHeader: string): number {
   return limit;
 }
 
-async function fetchCharacterDetail(characterId: number) {
-  const accessToken = await getValidAccessToken(characterId);
-  const response = await clientFetch(
-    "GET",
-    `/characters/${characterId}`,
-    characterId,
-    accessToken,
-  );
-  const data = (await response.json()) as CharacterDetail;
-  return data;
-}
-
-export { fetchCharacterDetail };
+export { clientFetch, authenticatedFetch };
