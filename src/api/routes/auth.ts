@@ -3,7 +3,10 @@ import rateLimit from "express-rate-limit";
 import { login, callback, logout } from "../../controllers/authController.js";
 import config from "../../config/index.js";
 
-const authRateLimit = rateLimit({windowMs: config.rateLimit.authWindowMs, limit: config.rateLimit.authLimit})
+const authRateLimit = rateLimit({
+  windowMs: config.rateLimit.authWindowMs,
+  limit: config.rateLimit.authLimit,
+});
 
 const router = Router();
 

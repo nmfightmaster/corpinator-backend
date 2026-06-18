@@ -1,58 +1,50 @@
 ## [1.17.2](https://github.com/nmfightmaster/corpinator-backend/compare/v1.17.1...v1.17.2) (2026-06-15)
 
-
 ### Bug Fixes
 
-* implement auth rate limiting ([f209fbc](https://github.com/nmfightmaster/corpinator-backend/commit/f209fbc1bbb162b4eccb734ffbfdaf076766dca6))
+- implement auth rate limiting ([f209fbc](https://github.com/nmfightmaster/corpinator-backend/commit/f209fbc1bbb162b4eccb734ffbfdaf076766dca6))
 
 ## [1.17.1](https://github.com/nmfightmaster/corpinator-backend/compare/v1.17.0...v1.17.1) (2026-06-15)
 
-
 ### Bug Fixes
 
-* implement helmet ([9c9f5e1](https://github.com/nmfightmaster/corpinator-backend/commit/9c9f5e1aca1491e66adfc24f0f2830c3075af5a6))
+- implement helmet ([9c9f5e1](https://github.com/nmfightmaster/corpinator-backend/commit/9c9f5e1aca1491e66adfc24f0f2830c3075af5a6))
 
 # [1.17.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.16.1...v1.17.0) (2026-06-15)
 
-
 ### Features
 
-* validate secret strength at boot ([032a34a](https://github.com/nmfightmaster/corpinator-backend/commit/032a34ae2fc21fecf041edfc3289cb71d33f6481))
+- validate secret strength at boot ([032a34a](https://github.com/nmfightmaster/corpinator-backend/commit/032a34ae2fc21fecf041edfc3289cb71d33f6481))
 
 ## [1.16.1](https://github.com/nmfightmaster/corpinator-backend/compare/v1.16.0...v1.16.1) (2026-06-15)
 
-
 ### Bug Fixes
 
-* harden trust proxy ([390bf5e](https://github.com/nmfightmaster/corpinator-backend/commit/390bf5e58bc7f9e1c342e3e184d8bab7a60e9e18))
+- harden trust proxy ([390bf5e](https://github.com/nmfightmaster/corpinator-backend/commit/390bf5e58bc7f9e1c342e3e184d8bab7a60e9e18))
 
 # [1.16.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.15.0...v1.16.0) (2026-06-15)
 
-
 ### Features
 
-* revoke refresh token on logout ([7ee2df5](https://github.com/nmfightmaster/corpinator-backend/commit/7ee2df5b84338f012d012841518013b0062c9738))
+- revoke refresh token on logout ([7ee2df5](https://github.com/nmfightmaster/corpinator-backend/commit/7ee2df5b84338f012d012841518013b0062c9738))
 
 # [1.15.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.14.0...v1.15.0) (2026-06-15)
 
-
 ### Features
 
-* implement default headers and create x-user-agent header ([ac3d07f](https://github.com/nmfightmaster/corpinator-backend/commit/ac3d07f94bc8335f452adac4391781e3c547132a))
+- implement default headers and create x-user-agent header ([ac3d07f](https://github.com/nmfightmaster/corpinator-backend/commit/ac3d07f94bc8335f452adac4391781e3c547132a))
 
 # [1.14.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.13.0...v1.14.0) (2026-06-15)
 
-
 ### Features
 
-* move stale session cleanup to cron ([f342ab1](https://github.com/nmfightmaster/corpinator-backend-v2/commit/f342ab19549e3d2d38fd469ba5bfb2580db16f8c))
+- move stale session cleanup to cron ([f342ab1](https://github.com/nmfightmaster/corpinator-backend-v2/commit/f342ab19549e3d2d38fd469ba5bfb2580db16f8c))
 
 # [1.13.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.12.0...v1.13.0) (2026-06-15)
 
-
 ### Features
 
-* address production secure cookies footgun ([c426db3](https://github.com/nmfightmaster/corpinator-backend-v2/commit/c426db387a33dcc1c4dcc6c0127e74e25de4d880))
+- address production secure cookies footgun ([c426db3](https://github.com/nmfightmaster/corpinator-backend-v2/commit/c426db387a33dcc1c4dcc6c0127e74e25de4d880))
 
 # [1.12.0](https://github.com/nmfightmaster/corpinator-backend-v2/compare/v1.11.0...v1.12.0) (2026-06-15)
 

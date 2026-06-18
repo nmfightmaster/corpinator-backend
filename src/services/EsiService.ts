@@ -84,14 +84,18 @@ async function clientFetch(
       );
     }
     if (remaining < config.rateLimit.throttleThreshold) {
-      logger.warn(`Approaching EVE ESI Standard rate limit. ${remaining} calls remaining.`)
+      logger.warn(
+        `Approaching EVE ESI Standard rate limit. ${remaining} calls remaining.`,
+      );
     }
     const returnedEveRateLimit = { remaining, limit };
     setRateLimit(returnedEveRateLimit, characterId);
   } else if (response.headers.get("x-esi-error-limit-remain")) {
     const remaining = Number(response.headers.get("x-esi-error-limit-remain"));
     if (remaining < config.rateLimit.throttleThreshold) {
-      logger.warn(`Approaching EVE ESI Error/Legacy rate limit. ${remaining} errors remaining.`)
+      logger.warn(
+        `Approaching EVE ESI Error/Legacy rate limit. ${remaining} errors remaining.`,
+      );
     }
     errorRateLimit = { ...errorRateLimit, remaining };
   }

@@ -1,4 +1,4 @@
-import { deleteExpiredSessions } from "../services/EveSsoService.js"
+import { deleteExpiredSessions } from "../services/EveSsoService.js";
 import logger from "./logger.js";
 
 const ONE_HOUR_MS = 60 * 60 * 1000;
@@ -8,5 +8,5 @@ export function loadCronJobs() {
     deleteExpiredSessions().catch((error) => {
       logger.error("Failed to delete expired sessions.", error);
     });
-  }, ONE_HOUR_MS)
+  }, ONE_HOUR_MS);
 }

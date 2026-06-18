@@ -42,7 +42,7 @@ interface Config {
     authLimit: number;
     throttleThreshold: number;
     retryAfter: number;
-  }
+  };
 }
 
 const requiredVars = [
@@ -81,13 +81,13 @@ const userAgentComponents = [
 const userAgent = userAgentComponents.filter(Boolean).join(" ");
 
 const encryptionKey = process.env.ENCRYPTION_KEY!;
-if (!(/^[0-9a-f]{64}$/i.test(encryptionKey))) {
-  throw new Error("Encryption key must be 32 byte hex value.")
+if (!/^[0-9a-f]{64}$/i.test(encryptionKey)) {
+  throw new Error("Encryption key must be 32 byte hex value.");
 }
 
 const sessionSecret = process.env.SESSION_SECRET!;
 if (sessionSecret.length < 64) {
-  throw new Error("Session secret must be at least 64 characters.")
+  throw new Error("Session secret must be at least 64 characters.");
 }
 
 const falsyValues = ["no", "false", "0"];
@@ -128,13 +128,14 @@ const config: Config = {
   secureCookies,
   trustProxy,
   rateLimit: {
-    standardWindowMs: Number(process.env.STANDARD_RATE_LIMIT_WINDOW_MS) || 900000,
+    standardWindowMs:
+      Number(process.env.STANDARD_RATE_LIMIT_WINDOW_MS) || 900000,
     standardLimit: Number(process.env.STANDARD_RATE_LIMIT_MAX) || 150,
     authWindowMs: Number(process.env.AUTH_RATE_LIMIT_WINDOW_MS) || 900000,
     authLimit: Number(process.env.AUTH_RATE_LIMIT_MAX) || 20,
     throttleThreshold: Number(process.env.THROTTLE_THRESHOLD) || 30,
     retryAfter: Number(process.env.RETRY_AFTER) || 30,
-  }
+  },
 };
 
 export default config;
