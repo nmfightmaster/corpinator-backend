@@ -1,9 +1,8 @@
 # [1.19.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.18.1...v1.19.0) (2026-06-18)
 
-
 ### Features
 
-* separate logout from logoutAll, properly type characterId, properly validate aud ([2d2e203](https://github.com/nmfightmaster/corpinator-backend/commit/2d2e203830fc36a8409d71934173246f8eae5667))
+- separate logout from logoutAll, properly type characterId, properly validate aud ([2d2e203](https://github.com/nmfightmaster/corpinator-backend/commit/2d2e203830fc36a8409d71934173246f8eae5667))
 
 ## [1.18.1](https://github.com/nmfightmaster/corpinator-backend/compare/v1.18.0...v1.18.1) (2026-06-18)
 
