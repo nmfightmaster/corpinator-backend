@@ -1,3 +1,10 @@
+## [1.18.1](https://github.com/nmfightmaster/corpinator-backend/compare/v1.18.0...v1.18.1) (2026-06-18)
+
+
+### Bug Fixes
+
+* harden auth claim ([602c589](https://github.com/nmfightmaster/corpinator-backend/commit/602c5897f00e43ace371ff49370c2bf355e1a84c))
+
 # [1.18.0](https://github.com/nmfightmaster/corpinator-backend/compare/v1.17.2...v1.18.0) (2026-06-18)
 
 
