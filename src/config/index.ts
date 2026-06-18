@@ -36,8 +36,12 @@ interface Config {
   secureCookies: boolean;
   trustProxy: number | false;
   rateLimit: {
+    standardWindowMs: number;
+    standardLimit: number;
     authWindowMs: number;
     authLimit: number;
+    throttleThreshold: number;
+    retryAfter: number;
   }
 }
 
@@ -124,8 +128,12 @@ const config: Config = {
   secureCookies,
   trustProxy,
   rateLimit: {
+    standardWindowMs: Number(process.env.STANDARD_RATE_LIMIT_WINDOW_MS) || 900000,
+    standardLimit: Number(process.env.STANDARD_RATE_LIMIT_MAX) || 150,
     authWindowMs: Number(process.env.AUTH_RATE_LIMIT_WINDOW_MS) || 900000,
     authLimit: Number(process.env.AUTH_RATE_LIMIT_MAX) || 20,
+    throttleThreshold: Number(process.env.THROTTLE_THRESHOLD) || 30,
+    retryAfter: Number(process.env.RETRY_AFTER) || 30,
   }
 };
 
