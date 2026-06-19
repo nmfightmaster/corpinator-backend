@@ -1,14 +1,14 @@
 import { Router } from "express";
 import health from "./routes/health.js";
 import auth from "./routes/auth.js";
-import esi from "./routes/esi.js";
+import esiCharacters from "./routes/esiCharacters.js";
 
 export default () => {
   const app = Router();
 
   health(app);
   auth(app);
-  esi(app);
+  esiCharacters(app);
 
   return app;
 };
