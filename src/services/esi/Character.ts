@@ -1,5 +1,5 @@
 import { authenticatedFetch } from "../../clients/EsiClient.js";
-import CharacterDetail from "../../models/CharacterDetail.js";
+import CharacterDetail from "../../models/character/CharacterDetail.js";
 
 async function fetchCharacterDetail(characterId: number) {
   const response = await authenticatedFetch(
