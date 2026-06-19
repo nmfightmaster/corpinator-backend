@@ -1,0 +1,119 @@
+{
+  "info": {
+    "name": "Corpinator",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (EVE SSO redirect)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/auth/login",
+            "description": "Open this in a browser — it redirects to EVE's login page. Postman will not follow the OAuth flow."
+          }
+        },
+        {
+          "name": "Callback (EVE SSO)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auth/callback?code=REPLACE_ME&state=REPLACE_ME",
+              "query": [
+                {
+                  "key": "code",
+                  "value": "REPLACE_ME"
+                },
+                {
+                  "key": "state",
+                  "value": "REPLACE_ME"
+                }
+              ]
+            },
+            "description": "Called by EVE after login. Not intended to be hit manually — values must match a real OAuth exchange and a valid signed state cookie."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/auth/logout",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "session={{session}}"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Logout All",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/auth/logout/all",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "session={{session}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "ESI",
+      "item": [
+        {
+          "name": "Get Character Info",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/esi/characters/me",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "session={{session}}"
+              }
+            ],
+            "description": "Returns EVE character info for the authenticated session. Requires a valid session cookie."
+          }
+        },
+        {
+          "name": "Get Character Assets",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/esi/characters/assets",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "session={{session}}"
+              }
+            ],
+            "description": "Returns all assets for the authenticated character. Requires a valid session cookie."
+          }
+        }
+      ]
+    }
+  ]
+}
