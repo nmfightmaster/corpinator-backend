@@ -3,6 +3,7 @@
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
+// -- App Models -------------------------------------------------------------
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -32,4 +33,67 @@ model Session {
   createdAt   DateTime  @default(now()) @map("created_at")
 
   @@map("sessions")
+}
+
+// -- Meta Models ----------------------------------------------------------
+model SdeMeta {
+  id          Int      @id @default(1)
+  buildNumber Int      @map("build_number")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("sde_meta")
+}
+
+// -- Types Models ----------------------------------------------------------
+model SdeType {
+  id            Int     @id
+  name          String
+  groupId       Int     @map("group_id")
+  portionSize   Int     @map("portion_size")
+  published     Boolean
+  volume        Float?
+  basePrice     Float?  @map("base_price")
+  marketGroupId Int?    @map("market_group_id")
+  metaGroupId   Int?    @map("meta_group_id")
+
+  materials SdeBlueprintMaterial[]
+  products SdeBlueprintProduct[]
+
+  @@map("sde_types")
+}
+
+// -- Blueprints Models ----------------------------------------------------
+model SdeBlueprint {
+  blueprintId    Int                    @id @map("blueprint_id")
+  materials SdeBlueprintMaterial[]
+  products  SdeBlueprintProduct[]
+  maxProductionLimit Int                    @map("max_production_limit")
+  copyingTime        Int?                   @map("copying_time")
+  manufacturingTime  Int?                   @map("manufacturing_time")
+  meResearchTime     Int?                    @map("me_research_time")
+  teResearchTime     Int?                    @map("te_research_time")
+  
+  @@map("sde_blueprints")
+}
+
+model SdeBlueprintMaterial {
+  materialId Int @map("material_id")
+  blueprintId Int @map("blueprint_id")
+  quantity Int
+  type SdeType @relation(fields: [materialId], references: [id]) 
+  blueprint SdeBlueprint @relation(fields: [blueprintId], references: [blueprintId])
+
+  @@id([blueprintId, materialId])
+  @@map("sde_blueprint_materials")
+}
+
+model SdeBlueprintProduct {
+  productId Int @map("product_id")
+  blueprintId Int @map("blueprint_id")
+  quantity Int
+  type SdeType @relation(fields: [productId], references: [id]) 
+  blueprint SdeBlueprint @relation(fields: [blueprintId], references: [blueprintId])
+
+  @@id([blueprintId, productId])
+  @@map("sde_blueprint_products")
 }
