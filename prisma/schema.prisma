@@ -47,7 +47,7 @@ model SdeMeta {
 // -- Types Models ----------------------------------------------------------
 model SdeType {
   id            Int     @id
-  name          String
+  name          Json // supports other languages
   groupId       Int     @map("group_id")
   portionSize   Int     @map("portion_size")
   published     Boolean
@@ -80,10 +80,11 @@ model SdeBlueprintMaterial {
   materialId Int @map("material_id")
   blueprintId Int @map("blueprint_id")
   quantity Int
+  activity String
   type SdeType @relation(fields: [materialId], references: [id]) 
   blueprint SdeBlueprint @relation(fields: [blueprintId], references: [blueprintId])
 
-  @@id([blueprintId, materialId])
+  @@id([blueprintId, materialId, activity])
   @@map("sde_blueprint_materials")
 }
 
@@ -91,9 +92,10 @@ model SdeBlueprintProduct {
   productId Int @map("product_id")
   blueprintId Int @map("blueprint_id")
   quantity Int
+  activity String
   type SdeType @relation(fields: [productId], references: [id]) 
   blueprint SdeBlueprint @relation(fields: [blueprintId], references: [blueprintId])
 
-  @@id([blueprintId, productId])
+  @@id([blueprintId, productId, activity])
   @@map("sde_blueprint_products")
 }
